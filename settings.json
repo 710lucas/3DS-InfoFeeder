@@ -1,0 +1,12 @@
+{
+    "cpu" : {
+        "enabled" : true
+    },
+    "memory" : {
+        "enabled" : true,
+        "total" : false
+    },
+    "disk" : {
+        "enabled" : true
+    }
+}
