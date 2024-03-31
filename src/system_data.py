@@ -81,3 +81,27 @@ def getDiskData(percentage = True, graph = True, free = True, usedTotal = False)
         returnData += f"{used:.2f}/{total:.2f} GB"
 
     return returnData
+
+def getSystemData(item = "", args = {}):
+    match(item):
+        case "cpu":
+            return getCPUData(
+                graph = args.get("graph", True),
+                percentage = args.get("percentage", True)
+            ) 
+        case "memory":
+            return getMemoryData(
+                graph = args.get("graph", True),
+                active = args.get("active", True),
+                percentage = args.get("percentage", True),
+                total = args.get("total", True)
+            ) 
+        case "disk":
+            return getDiskData(
+                graph = args.get("graph", True),
+                percentage = args.get("percentage", True),
+                free = args.get("free", True),
+                usedTotal = args.get("usedTotal", False)
+            )
+        case _:
+            return ""

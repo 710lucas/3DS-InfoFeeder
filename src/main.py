@@ -3,6 +3,7 @@ import requests
 import os
 import psutil
 import threading
+from collections import OrderedDict
 
 import json
 
@@ -18,40 +19,51 @@ def send_data(API_URL, API_PORT, payload):
 
 def loadSettings():
     with open("settings.json") as jsonFile:
-        return json.load(jsonFile)
+        return json.load(jsonFile, object_pairs_hook=OrderedDict)
+    
+
+def loadCustomMessage(customMessage):
+    fullMessage = ""
+
+    foregroundColors = {
+        "black" : "\033[30m",
+        "red" : "\033[31m",
+        "green" : "\033[32m",
+        "yellow" : "\033[33m",
+        "blue" : "\033[34m",
+        "magenta" : "\033[35m",
+        "cyan" : "\033[36m",
+        "white" : "\033[37m",
+    }
+    backgroundColors = {
+        "black" : "\033[40m",
+        "red" : "\033[41m",
+        "green" : "\033[42m",
+        "yellow" : "\033[43m",
+        "blue" : "\033[44m",
+        "magenta" : "\033[45m",
+        "cyan" : "\033[46m",
+        "white" : "\033[47m",
+    }
+
+    fullMessage+=backgroundColors.get(customMessage.get("bg-color"), "")
+    fullMessage+=foregroundColors.get(customMessage.get("fg-color"), "")
+
+    for line in customMessage.get("lines"):
+        fullMessage += line + "\n"
+    return fullMessage + "\033[0m"
     
 def getRequestString(settings):
     requestString = ""
-    cpuEnabled = settings.get("cpu").get("enabled", False)
-    cpu = settings.get("cpu", None)
 
-    memoryEnabled = settings.get("memory").get("enabled", False)
-    memory = settings.get("memory")
+    systemInfo = ["cpu", "memory", "disk"]
 
-    diskEnabled = settings.get("disk").get("enabled", False)
-    disk = settings.get("disk")
+    for key, value in settings.items():
+        if(key in systemInfo):
+            requestString += system_data.getSystemData(key, value) + "\n"
+        if(key == "custom-message"):
+            requestString += str(loadCustomMessage(value)).encode("ascii", errors="ignore").decode("ascii")
 
-    if(cpuEnabled):
-        requestString += system_data.getCPUData(
-            graph = cpu.get("graph", True), 
-            percentage = cpu.get("percentage", True)
-        ) + "\n"
-    
-    if(memoryEnabled):
-        requestString += system_data.getMemoryData(
-            graph = memory.get("graph", True),
-            active = memory.get("active", True),
-            percentage = memory.get("percentage", True),
-            total = memory.get("total", True)
-        ) + "\n"
-
-    if(diskEnabled):
-        requestString += system_data.getDiskData(
-            free= disk.get("free", True),
-            usedTotal= disk.get("usedTotal", False),
-            graph= disk.get("graph", True),
-            percentage= disk.get("percentage", True)
-        ) + "\n"
 
     return requestString
 
