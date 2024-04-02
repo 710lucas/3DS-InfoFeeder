@@ -8,6 +8,7 @@ from collections import OrderedDict
 import json
 
 import system_data
+import api_calls
 
 def send_data(API_URL, API_PORT, payload):
     try:
@@ -59,10 +60,13 @@ def getRequestString(settings):
     systemInfo = ["cpu", "memory", "disk"]
 
     for key, value in settings.items():
-        if(key in systemInfo):
+        if (key in systemInfo):
             requestString += system_data.getSystemData(key, value) + "\n"
-        if(key == "custom-message"):
+        if ("custom-message" in key):
             requestString += str(loadCustomMessage(value)).encode("ascii", errors="ignore").decode("ascii")
+        if (key == "api-calls"):
+            for api_call in value:
+                requestString += str(api_calls.makeCall(api_call.get("url"), api_call.get("body", ""), api_call.get("objects")))
 
 
     return requestString

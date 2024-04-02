@@ -8,15 +8,35 @@
     },
     "custom-message" : {
         "lines" : [
-            " ___  ___  _______   ___       ___       ________",     
-            "|\\  \\|\\  \\|\\  ___ \\ |\\  \\     |\\  \\     |\\   __  \\    ",
-            "\\ \\  \\\\\\  \\ \\   __/|\\ \\  \\    \\ \\  \\    \\ \\  \\|\\  \\   ",
-            " \\ \\   __  \\ \\  \\_|/_\\ \\  \\    \\ \\  \\    \\ \\  \\\\\\  \\  ",
-            "  \\ \\  \\ \\  \\ \\  \\_|\\ \\ \\  \\____\\ \\  \\____\\ \\  \\\\\\  \\ ",
-            "   \\ \\__\\ \\__\\ \\_______\\ \\_______\\ \\_______\\ \\_______\\",
-            "    \\|__|\\|__|\\|_______|\\|_______|\\|_______|\\|_______|"
+            " _   _      _ _       ",
+            "| | | |    | | |      ",
+            "| |_| | ___| | | ___  ",
+            "|  _  |/ _ \\ | |/ _ \\ ",
+            "| | | |  __/ | | (_) )",
+            "|_| |_|\\___|_|_|\\___/ "
         ],
         "fg-color" : "green",
         "bg-color" : "black"
-    }
+    },
+    "custom-message-2" : {
+        "lines" : [
+            "",
+            "Cidade: Rio Tinto"
+        ]
+    },
+    "api-calls" : [
+        {
+            "url" : "https://api.open-meteo.com/v1/forecast?latitude=-6.8031&longitude=-35.0806&current=temperature_2m,apparent_temperature,precipitation&timezone=America%2FSao_Paulo&forecast_days=1",
+            "objects" : [
+                {
+                    "label" : "\tTemperatura: ",
+                    "value" : ["current", "temperature_2m"]
+                },
+                {
+                    "label" : "\tSensacao termica: ",
+                    "value" : ["current", "apparent_temperature"]
+                }
+            ]
+        }
+    ]
 }
